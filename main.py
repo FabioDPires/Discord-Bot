@@ -25,6 +25,14 @@ def add_encouragment(message):
   else:
     db["user_encouragments"]=[message]
 
+def delete_encouragment(index):
+  user_encouragments=db["user_encouragments"]
+
+  if len(user_encouragments)>index:
+    del user_encouragments[index]
+    db["user_encouragments"]=user_encouragments
+
+
 #this event will be called when the bot is ready 
 @client.event
 async def on_ready():
