@@ -42,6 +42,14 @@ def delete_encouragment(index):
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
 
+#@client.event
+#async def on_member_join(member):
+ #   await member.create_dm()
+  #  await member.dm_channel.send(
+   #     f'Hi {member.name}, welcome to my Discord server!'
+    #)
+
+
 @client.event
 async def on_message(message):
 
@@ -94,13 +102,16 @@ async def on_message(message):
         await message.channel.send("There is no messages added by the server's users")
   
   if msg.startswith('$responding'):
-    value=msg.split("$responding ",1)[1]
-    if(value.lower()=="true"):
-      db["responding"]=True
-      await message.channel.send("The bot is now responding to messages")
+    if discord.utils.get(message.author.roles, name="Admin") is None:
+      await message.channel.send("You are not authorized to this action!")
     else:
-      db["responding"]=False
-      await message.channel.send("The bot is now not responding to messages")
+      value=msg.split("$responding ",1)[1]
+      if(value.lower()=="true"):
+        db["responding"]=True
+        await message.channel.send("The bot is now responding to messages")
+      else:
+        db["responding"]=False
+        await message.channel.send("The bot is now not responding to messages")
 
 keep_alive()
 client.run(os.getenv('TOKEN'))
