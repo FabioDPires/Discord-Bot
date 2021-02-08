@@ -66,7 +66,11 @@ async def on_message(message):
   if msg.startswith('$add'):
     encouraging_message=msg.split("$add ",1)[1]
     add_encouragment(encouraging_message)
-    await message.channel.send('Thanks for contributting :)')
+    author=str(message.author)
+    author=author.split("#")[0]
+    print(author)
+    thanks="Thanks for contributting {} ".format(author) +"\U0001F601"
+    await message.channel.send(thanks)
 
   if msg.startswith('$delete'):
     user_encouragments=[]
