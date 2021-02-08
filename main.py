@@ -81,17 +81,20 @@ async def on_message(message):
     await message.channel.send(thanks)
 
   if msg.startswith('$delete'):
-    user_encouragments=[]
-    if "user_encouragments" in db.keys():
-      index=int(msg.split('$delete',1)[1])
-      delete_encouragment(index)
-      user_encouragments=db["user_encouragments"]
-    
-    if len(user_encouragments)>0:
-      await message.channel.send(user_encouragments)
-
+    if discord.utils.get(message.author.roles, name="Admin") is None:
+      await message.channel.send("You are not authorized to this action!")
     else:
-      await message.channel.send("There is no messages added by the server's users")
+      user_encouragments=[]
+      if "user_encouragments" in db.keys():
+        index=int(msg.split('$delete',1)[1])
+        delete_encouragment(index)
+        user_encouragments=db["user_encouragments"]
+      
+      if len(user_encouragments)>0:
+        await message.channel.send(user_encouragments)
+
+      else:
+        await message.channel.send("There is no messages added by the server's users")
   
   if msg.startswith('$all'):
       user_encouragments=[]
