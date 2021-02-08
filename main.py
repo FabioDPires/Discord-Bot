@@ -7,7 +7,10 @@ client=discord.Client()
 
 #returns a random quote from the api
 def get_quote():
-  quote=requests.get("https://zenquotes.io/api/random")
+  response=requests.get("https://zenquotes.io/api/random")
+  quote_json=json.loads(response.text)
+  quote=quote_json[0]['q'] + " -" + quote_json[0]['a']
+  return (quote)
 
 #this event will be called when the bot is ready 
 @client.event
