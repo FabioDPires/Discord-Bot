@@ -10,6 +10,9 @@ sad_words=["sad","depressed","unhappy","miserable","depressing"]
 
 encouragments = ["Cheer up!","You are great"]
 
+if "responding" not in db.keys():
+  db["responding"]=True
+
 #returns a random quote from the api
 def get_quote():
   response=requests.get("https://zenquotes.io/api/random")
@@ -51,9 +54,10 @@ async def on_message(message):
   if msg.startswith('$inspire'):
     await message.channel.send(get_quote())
 
-  options=encouragments
-  if "user_encouragments" in db.keys():
-    options=options + db["user_encouragments"]
+  if db["responding"]:
+    options=encouragments
+    if "user_encouragments" in db.keys():
+      options=options + db["user_encouragments"]
 
   if any(word in msg for word in sad_words):
     await message.channel.send(random.choice(options))
@@ -79,7 +83,10 @@ async def on_message(message):
   if msg.startswith('$all'):
       user_encouragments=[]
       user_encouragments=db["user_encouragments"]
-      await message.channel.send(user_encouragments)
+      if len(user_encouragments)>0:
+        await message.channel.send(user_encouragments)
+      else:
+        await message.channel.send("There is no messages added by the server's users")
 
 
 
