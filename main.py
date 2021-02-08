@@ -2,8 +2,12 @@ import discord
 import os
 import requests
 import json
+import random
 
 client=discord.Client()
+sad_words=["sad","depressed","unhappy","miserable","depressing"]
+
+encouragments = ["Cheer up!","You are great"]
 
 #returns a random quote from the api
 def get_quote():
@@ -24,9 +28,14 @@ async def on_message(message):
   if message.author==client.user:
     return
 
+  msg= message.content
+  
   #if the message is a command
-  if message.content.startswith('$hello'):
-    await message.channel.send('Hello!!!')
+  if msg.startswith('$inspire'):
+    await message.channel.send(get_quote())
+
+  if any(word in msg for word in sad_words):
+    await message.channel.send(random.choice(encouragments))
 
 client.run(os.getenv('TOKEN'))
 
