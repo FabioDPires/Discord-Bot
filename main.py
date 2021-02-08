@@ -42,12 +42,12 @@ def delete_encouragment(index):
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
 
-#@client.event
-#async def on_member_join(member):
- #   await member.create_dm()
-  #  await member.dm_channel.send(
-   #     f'Hi {member.name}, welcome to my Discord server!'
-    #)
+@client.event
+async def on_member_join(member):
+    await member.create_dm()
+    await member.dm_channel.send(
+        f'Hi {member.name}, welcome to my Discord server!'
+    )
 
 
 @client.event
@@ -82,7 +82,10 @@ async def on_message(message):
 
   if msg.startswith('$delete'):
     if discord.utils.get(message.author.roles, name="Admin") is None:
-      await message.channel.send("You are not authorized to this action!")
+      author=str(message.author)
+      author=author.split("#")[0]
+      negate="What do you think you are doing {} ? Get the fu** out".format(author)+" \U0001F92C"
+      await message.channel.send(negate)
     else:
       user_encouragments=[]
       if "user_encouragments" in db.keys():
