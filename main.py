@@ -3,6 +3,7 @@ import os
 import requests
 import json
 import random
+from replit import db
 
 client=discord.Client()
 sad_words=["sad","depressed","unhappy","miserable","depressing"]
@@ -15,6 +16,14 @@ def get_quote():
   quote_json=json.loads(response.text)
   quote=quote_json[0]['q'] + " -" + quote_json[0]['a']
   return (quote)
+
+def add_encouragment(message):
+  if "user_encouragments" in db.Keys:
+    user_encouragments = db["user_encouragments"]
+    user_encouragments.append(message)
+    db["user_encouragments"]=user_encouragments
+  else:
+    db["user_encouragments"]=[message]
 
 #this event will be called when the bot is ready 
 @client.event
@@ -29,7 +38,7 @@ async def on_message(message):
     return
 
   msg= message.content
-  
+
   #if the message is a command
   if msg.startswith('$inspire'):
     await message.channel.send(get_quote())
