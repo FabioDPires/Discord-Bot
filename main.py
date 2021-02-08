@@ -75,6 +75,11 @@ async def on_message(message):
 
     else:
       await message.channel.send("There is no messages added by the server's users")
+  
+  if msg.startswith('$all'):
+      user_encouragments=[]
+      user_encouragments=db["user_encouragments"]
+      await message.channel.send(user_encouragments)
 
 
 
