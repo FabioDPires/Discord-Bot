@@ -63,5 +63,20 @@ async def on_message(message):
     add_encouragment(encouraging_message)
     await message.channel.send('Thanks for contributting :)')
 
+  if msg.startswith('$delete'):
+    user_encouragments=[]
+    if "user_encouragments" in db.keys():
+      index=int(msg.split('$delete',1)[1])
+      delete_encouragment(index)
+      user_encouragments=db["user_encouragments"]
+    
+    if len(user_encouragments)>0:
+      await message.channel.send(user_encouragments)
+
+    else:
+      await message.channel.send("There is no messages added by the server's users")
+
+
+
 client.run(os.getenv('TOKEN'))
 
