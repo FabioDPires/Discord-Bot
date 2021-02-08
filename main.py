@@ -18,7 +18,7 @@ def get_quote():
   return (quote)
 
 def add_encouragment(message):
-  if "user_encouragments" in db.Keys:
+  if "user_encouragments" in db.keys():
     user_encouragments = db["user_encouragments"]
     user_encouragments.append(message)
     db["user_encouragments"]=user_encouragments
@@ -36,7 +36,7 @@ def delete_encouragment(index):
 #this event will be called when the bot is ready 
 @client.event
 async def on_ready():
-  print('We have logged int as {0.user}'.format(client))
+  print('We have logged in as {0.user}'.format(client))
 
 @client.event
 async def on_message(message):
@@ -52,11 +52,16 @@ async def on_message(message):
     await message.channel.send(get_quote())
 
   options=encouragments
-  if "user_encouragments" in db.Keys():
+  if "user_encouragments" in db.keys():
     options=options + db["user_encouragments"]
 
   if any(word in msg for word in sad_words):
     await message.channel.send(random.choice(options))
+
+  if msg.startswith('$add'):
+    encouraging_message=msg.split("$add ",1)[1]
+    add_encouragment(encouraging_message)
+    await message.channel.send('Thanks for contributting :)')
 
 client.run(os.getenv('TOKEN'))
 
