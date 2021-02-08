@@ -116,6 +116,13 @@ async def on_message(message):
         db["responding"]=False
         await message.channel.send("The bot is now not responding to messages")
 
+  if msg.startswith('$delall'):
+    if discord.utils.get(message.author.roles, name="Admin") is None:
+      await message.channel.send("You are not authorized to this action!")
+    else:
+      db["user_encouragments"]=[]
+      await message.channel.send("All the messages added by the users where deleted")
+
 keep_alive()
 client.run(os.getenv('TOKEN'))
 
