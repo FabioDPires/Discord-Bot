@@ -59,8 +59,8 @@ async def on_message(message):
     if "user_encouragments" in db.keys():
       options=options + db["user_encouragments"]
 
-  if any(word in msg for word in sad_words):
-    await message.channel.send(random.choice(options))
+    if any(word in msg for word in sad_words):
+      await message.channel.send(random.choice(options))
 
   if msg.startswith('$add'):
     encouraging_message=msg.split("$add ",1)[1]
@@ -87,8 +87,15 @@ async def on_message(message):
         await message.channel.send(user_encouragments)
       else:
         await message.channel.send("There is no messages added by the server's users")
-
-
+  
+  if msg.startswith('$responding'):
+    value=msg.split("$responding ",1)[1]
+    if(value.lower()=="true"):
+      db["responding"]=True
+      await message.channel.send("The bot is now responding to messages")
+    else:
+      db["responding"]=False
+      await message.channel.send("The bot is now not responding to messages")
 
 client.run(os.getenv('TOKEN'))
 
